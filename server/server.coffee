@@ -4,11 +4,11 @@ Songs = new Meteor.Collection 'song'
 
 Songs.allow {
   insert: (userId, song) ->
-    true
+    userId
   update: (userId, song, fieldName, modifier) ->
-    true
+    userId
   remove: (userId, song) ->
-    true
+    userId
 }
 
 Meteor.publish 'songTitles', ->
@@ -19,7 +19,7 @@ Meteor.publish 'song', (songId) ->
 
 Meteor.methods {
   clearSongs: ->
-    return unless true
+    return unless Meteor.userId()
     Songs.remove {}
   firstSongId: ->
     Songs.findOne({}, {sort:['title']})._id

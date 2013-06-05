@@ -1,6 +1,5 @@
 
 # TODO: ON-On logo at bottom and info
-# TODO: Fix search box closing automatically
 # TODO: Page footer / site info
 # TODO: Small touch device layout
 # TODO: Un-auto-subscribe in the name of battery usage.
@@ -81,15 +80,14 @@ Template.song.events {
     Songs.update Session.get('songId'), {$set: {title: title, body: body}}
   'click .js-delete-song': (event) ->
     Songs.remove Session.get('songId')
-  'keypress .js-json-form': (event) ->
-    if event.which == 13
-      form = $(event.target)
-      songs = JSON.parse form.val()
+  'click .js-load-json': (event) ->
+    form = $('.js-json-form')
+    songs = JSON.parse form.val()
 
-      alert "parsed #{Object.keys(songs).length} songs. now inserting ..."
+    alert "parsed #{Object.keys(songs).length} songs. now inserting ..."
 
-      for own title, body of songs
-        Songs.insert {title: title, body: body}
+    for own title, body of songs
+      Songs.insert {title: title, body: body}
   'click .js-clear-songs': (event) ->
     Meteor.call 'clearSongs'
 }
