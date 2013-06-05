@@ -18,8 +18,12 @@
 </body>
 
 <template name="songList">
+
   <div id="l-song-search">
     <input type="search" id="song-search" class="" placeholder="search {{count}} hash songs"/>
+    {{#if currentUser}}
+    <button class='btn js-new-song'>+</button>
+    {{/if}}
   </div>
 
   <ul id="song-list" class="unstyled">
@@ -30,20 +34,28 @@
 </template>
 
 <template name="song">
-{{#if isLoading}}
-  <textarea class="json-input js-json-form" />
-  <button class="pull-right btn btn-danger js-clear-songs">CLEAR ALL</button>
-{{else}}
-  {{#with song}}
-    <h1 class="js-song-title">{{title}}</h1>
-    <pre class="song-body">{{body}}</pre>
-    {{#if isEditing}}
-      <hr>
-      <div class="js-song-form">
-        <p><input type="text" class="js-input-title" value="{{title}}"/></p>
-        <p><textarea class="input-body js-input-body">{{body}}</textarea></p>
-      </div>
+  {{#if isNewSong}}
+    <p><input type="text" class="js-input-title"/></p>
+    <p><textarea class="input-body js-input-body"></textarea></p>
+    <button class="btn js-add-song">Save</button>
+  {{else}}
+    {{#if isLoading}}
+      <textarea class="json-input js-json-form" />
+      <button class="pull-right btn btn-danger js-clear-songs">CLEAR ALL</button>
+    {{else}}
+      {{#with song}}
+        <h1 class="js-song-title">{{title}}</h1>
+        <pre class="song-body">{{body}}</pre>
+        {{#if currentUser}}
+          <hr>
+          <div class="js-song-form">
+            <p><input type="text" class="js-input-title" value="{{title}}"/></p>
+            <p><textarea class="input-body js-input-body">{{body}}</textarea></p>
+            <button class="btn js-save-song">Save</button>
+            <button class="btn btn-danger js-delete-song pull-right">Delete</button>
+          </div>
+        {{/if}}
+      {{/with}}
     {{/if}}
-  {{/with}}
-{{/if}}
+  {{/if}}
 </template>

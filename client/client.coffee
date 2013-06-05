@@ -9,8 +9,8 @@
 
 Songs = new Meteor.Collection 'song'
 
-Session.set 'isEditing', true
 Session.set 'isLoading', false
+Session.set 'isNewSong', false
 
 Meteor.subscribe 'songTitles', ->
   Meteor.call 'firstSongId', (error, id) ->
@@ -52,21 +52,35 @@ Template.songList.rendered = ->
 Template.songList.count = ->
   Songs.find({}).count()
 
+Template.songList.events {
+  'click .js-new-song': (event) ->
+    Session.set 'isNewSong', !Session.get('isNewSong')
+}
+
 Template.song.song = ->
   Songs.findOne Session.get('songId')
 
-Template.song.isEditing = ->
-  Session.get 'isEditing'
-
-Template.song.isLoading= ->
+Template.song.isLoading = ->
   Session.get 'isLoading'
 
+Template.song.isNewSong = ->
+  Session.get 'isNewSong'
+
 Template.song.events {
-  'keypress .js-song-form': (event) ->
-    if event.which == 13
-      title = $('.js-input-title').val()
-      body = $('.js-input-body').val()
-      Songs.update Session.get('songId'), {$set: {title: title, body: body}}
+  'click .js-add-song': (event) ->
+    title = $('.js-input-title').val()
+    body = $('.js-input-body').val()
+    $('.js-input-title').val('')
+    $('.js-input-body').val('')
+    id = Songs.insert {title: title, body: body}
+    Session.set 'isNewSong', false
+    Session.set 'songId', id
+  'click .js-save-song': (event) ->
+    title = $('.js-input-title').val()
+    body = $('.js-input-body').val()
+    Songs.update Session.get('songId'), {$set: {title: title, body: body}}
+  'click .js-delete-song': (event) ->
+    Songs.remove Session.get('songId')
   'keypress .js-json-form': (event) ->
     if event.which == 13
       form = $(event.target)
