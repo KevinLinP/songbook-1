@@ -22,19 +22,20 @@ Meteor.subscribe 'songTitles', ->
 
   $('body').addClass('is-mobile') if mobile()
 
-  songs = Songs.find({}, {fields: {title: 1}}).fetch()
-  titles = _.map songs, (song) ->
-    {value: song.title, id: song._id}
-  $('#song-search').autocomplete {
-    source: titles
-    delay: 50
-    select: (event, ui) ->
-      Session.set('songId', ui.item.id)
-      Meteor.setTimeout( ->
-        $(event.target).val('')
-      50)
-  
-  }
+  Meteor.setTimeout( ->
+    songs = Songs.find({}, {fields: {title: 1}}).fetch()
+    titles = _.map songs, (song) ->
+      {value: song.title, id: song._id}
+    $('#song-search').autocomplete {
+      source: titles
+      delay: 50
+      select: (event, ui) ->
+        Session.set('songId', ui.item.id)
+        Meteor.setTimeout( ->
+          $(event.target).val('')
+        , 100)
+    }
+  , 500)
 
 Deps.autorun ->
   Meteor.subscribe 'song', Session.get('songId')
