@@ -22,7 +22,10 @@ Meteor.subscribe 'songTitles', ->
 
   $('body').addClass('is-mobile') if mobile()
 
-  Meteor.setTimeout( ->
+  songCount = Songs.find({}).count()
+  $('#song-search').attr('placeholder', "search #{songCount} hash songs")
+
+  $(document).ready ->
     songs = Songs.find({}, {fields: {title: 1}}).fetch()
     titles = _.map songs, (song) ->
       {value: song.title, id: song._id}
@@ -35,7 +38,6 @@ Meteor.subscribe 'songTitles', ->
           $(event.target).val('')
         , 100)
     }
-  , 500)
 
 Deps.autorun ->
   Meteor.subscribe 'song', Session.get('songId')
@@ -48,9 +50,6 @@ Template.songList.rendered = ->
     id = $(this).attr 'data-id'
     Session.set 'songId', id
     $(document).scrollTop(0) if $('body').hasClass('is-mobile')
-
-Template.songList.count = ->
-  Songs.find({}).count()
 
 Template.songList.events {
   'click .js-new-song': (event) ->
