@@ -1,0 +1,49 @@
+<head>
+  <title>songbook</title>
+  <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet">
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+</head>
+
+<body>
+  <div id='login'>{{loginButtons}}</div>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div id="navigation" class="span3">{{> songList}}</div>
+      <div class="span9" id="main-content">
+        {{> song}}
+      </div>
+    </div>
+  </div>
+</body>
+
+<template name="songList">
+  <div id="l-song-search">
+    <input type="search" id="song-search" class="" placeholder="search {{count}} hash songs"/>
+  </div>
+
+  <ul id="song-list" class="unstyled">
+  {{#each songs }}
+  <li><a data-id="{{_id}}" href="#{{_id}}">{{title}}</a></li>
+  {{/each}}
+  </ul>
+</template>
+
+<template name="song">
+{{#if isLoading}}
+  <textarea class="json-input js-json-form" />
+  <button class="pull-right btn btn-danger js-clear-songs">CLEAR ALL</button>
+{{else}}
+  {{#with song}}
+    <h1 class="js-song-title">{{title}}</h1>
+    <pre class="song-body">{{body}}</pre>
+    {{#if isEditing}}
+      <hr>
+      <div class="js-song-form">
+        <p><input type="text" class="js-input-title" value="{{title}}"/></p>
+        <p><textarea class="input-body js-input-body">{{body}}</textarea></p>
+      </div>
+    {{/if}}
+  {{/with}}
+{{/if}}
+</template>
