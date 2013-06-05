@@ -8,6 +8,7 @@
 
 Songs = new Meteor.Collection 'song'
 
+Session.set 'isLoadingList', true
 Session.set 'isLoading', false
 Session.set 'isNewSong', false
 
@@ -24,6 +25,8 @@ Meteor.subscribe 'songTitles', ->
 
   songCount = Songs.find({}).count()
   $('#song-search').attr('placeholder', "search #{songCount} hash songs")
+
+  Session.set('isLoadingList', false)
 
   $(document).ready ->
     songs = Songs.find({}, {fields: {title: 1}}).fetch()
@@ -50,6 +53,12 @@ Template.songList.rendered = ->
     id = $(this).attr 'data-id'
     Session.set 'songId', id
     $(document).scrollTop(0) if $('body').hasClass('is-mobile')
+
+Template.songList.count = ->
+  if Session.get('isLoadingList')
+    Songs.find({}).count()
+  else
+    null
 
 Template.songList.events {
   'click .js-new-song': (event) ->
