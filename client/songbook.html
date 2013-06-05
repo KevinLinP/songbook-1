@@ -8,12 +8,6 @@
   <div class="container-fluid">
     <div class="row-fluid">
       <div id="navigation" class="span3">
-        <div id="l-song-search">
-          <input type="search" id="song-search" class=""/>
-          {{#if currentUser}}
-          <button class='btn js-new-song'>+</button>
-          {{/if}}
-        </div>
         {{> songList}}
       </div>
       <div class="span9" id="main-content">
@@ -24,11 +18,15 @@
 </body>
 
 <template name="songList">
-  <div id="song-list">
-    {{#if count}}
-      <div class="lead">Loaded {{count}} songs...</div>
-    {{/if}}
 
+  <div id="l-song-search">
+    <input type="search" id="song-search" placeholder="search {{count}} hash song"/>
+    {{#if currentUser}}
+    <button class='btn js-new-song'>+</button>
+    {{/if}}
+  </div>
+
+  <div id="song-list">
     <ul class="unstyled">
     {{#each songs }}
     <li><a data-id="{{_id}}" href="#{{_id}}">{{title}}</a></li>

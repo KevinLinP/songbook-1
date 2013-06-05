@@ -8,7 +8,6 @@
 
 Songs = new Meteor.Collection 'song'
 
-Session.set 'isLoadingList', true
 Session.set 'isLoading', false
 Session.set 'isNewSong', false
 
@@ -23,12 +22,19 @@ Meteor.subscribe 'songTitles', ->
 
   $('body').addClass('is-mobile') if mobile()
 
-  songCount = Songs.find({}).count()
-  $('#song-search').attr('placeholder', "search #{songCount} hash songs")
+Deps.autorun ->
+  Meteor.subscribe 'song', Session.get('songId')
 
-  Session.set('isLoadingList', false)
+Template.songList.songs = ->
+  Songs.find {}, {fields: {title: 1}, sort: ['title']}
 
+Template.songList.rendered = ->
   $(document).ready ->
+    $('#song-list').on 'click', 'a', ->
+      id = $(this).attr 'data-id'
+      Session.set 'songId', id
+      $(document).scrollTop(0) if $('body').hasClass('is-mobile')
+
     songs = Songs.find({}, {fields: {title: 1}}).fetch()
     titles = _.map songs, (song) ->
       {value: song.title, id: song._id}
@@ -42,23 +48,8 @@ Meteor.subscribe 'songTitles', ->
         , 100)
     }
 
-Deps.autorun ->
-  Meteor.subscribe 'song', Session.get('songId')
-
-Template.songList.songs = ->
-  Songs.find {}, {fields: {title: 1}, sort: ['title']}
-
-Template.songList.rendered = ->
-  $('#song-list').on 'click', 'a', ->
-    id = $(this).attr 'data-id'
-    Session.set 'songId', id
-    $(document).scrollTop(0) if $('body').hasClass('is-mobile')
-
 Template.songList.count = ->
-  if Session.get('isLoadingList')
-    Songs.find({}).count()
-  else
-    null
+  Songs.find({}).count()
 
 Template.songList.events {
   'click .js-new-song': (event) ->
