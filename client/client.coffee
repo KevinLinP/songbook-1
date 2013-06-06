@@ -1,4 +1,5 @@
 
+# TODO: Clean up shitty CSS around lead logo and footer
 # TODO: ON-On logo at bottom and info
 # TODO: Page footer / site info
 # TODO: Small touch device layout

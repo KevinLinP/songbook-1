@@ -12,6 +12,11 @@
       </div>
       <div class="span9" id="main-content">
         {{> song}}
+
+
+        <div id="footer" class="text-center">
+          <img src="yasshhh-logo.png" height=100 width=201/>
+        </div>
       </div>
     </div>
   </div>
@@ -20,7 +25,8 @@
 <template name="songList">
 
   <div id="l-song-search">
-    <input type="search" id="song-search" placeholder="search {{count}} hash song"/>
+    <div class="lead">HHH Songbook</div>
+    <input type="search" id="song-search" placeholder="search {{count}} hash songs"/>
     {{#if currentUser}}
     <button class='btn js-new-song'>+</button>
     {{/if}}
