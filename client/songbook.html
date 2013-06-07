@@ -14,9 +14,6 @@
         {{> song}}
 
 
-        <div id="footer" class="text-center">
-          <img src="yasshhh-logo.png" height=100 width=201/>
-        </div>
       </div>
     </div>
   </div>
@@ -26,7 +23,7 @@
 
   <div id="l-song-search">
     <div class="lead">HHH Songbook</div>
-    <input type="search" id="song-search" placeholder="search {{count}} hash songs"/>
+    <input type="search" id="song-search" class="search-query" placeholder="search {{count}} hash songs"/>
     {{#if currentUser}}
     <button class='btn js-new-song'>+</button>
     {{/if}}
@@ -54,7 +51,12 @@
     {{else}}
       {{#with song}}
         <h1 class="js-song-title">{{title}}</h1>
-        <pre class="song-body">{{body}}</pre>
+        {{#if body}}
+          <pre class="song-body">{{body}}</pre>
+          <div id="footer" class="text-center">
+            <img src="yasshhh-logo.png" height=100 width=201/>
+          </div>
+        {{/if}}
         {{#if currentUser}}
           <hr>
           <div class="js-song-form">

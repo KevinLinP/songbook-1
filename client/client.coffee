@@ -1,7 +1,7 @@
 
+# TODO: Navigable list
 # TODO: Clean up shitty CSS around lead logo and footer
-# TODO: ON-On logo at bottom and info
-# TODO: Page footer / site info
+# TODO: Footer site info
 # TODO: Small touch device layout
 # TODO: Un-auto-subscribe in the name of battery usage.
 # TODO: Add length and type categories
